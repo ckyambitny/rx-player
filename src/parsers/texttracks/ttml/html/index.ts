@@ -54,7 +54,7 @@ import parseCue, { ITTMLHTMLCue } from "./parseCue";
  */
 export default function parseTTMLStringToDIV(
   str : string,
-  timeOffset : number
+  timeOffset? : number
 ) : ITTMLHTMLCue[] {
   const ret : ITTMLHTMLCue[] = [];
   const xml = new DOMParser().parseFromString(str, "text/xml");
@@ -135,12 +135,12 @@ export default function parseTTMLStringToDIV(
 
         const cue = parseCue(
           paragraph,
-          timeOffset,
           styles,
           regions,
           body,
           paragraphStyle,
-          params
+          params,
+          timeOffset
         );
         if (cue) {
           ret.push(cue);

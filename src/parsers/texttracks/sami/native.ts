@@ -103,8 +103,8 @@ function decodeEntities(text : string) : string {
  */
 function parseSami(
   smi : string,
-  timeOffset : number,
-  lang : string
+  timeOffset? : number,
+  lang? : string
 ) : Array<TextTrackCue|VTTCue> {
   const syncOpen = /<sync[ >]/ig;
   const syncClose = /<sync[ >]|<\/body>/ig;
@@ -117,7 +117,7 @@ function parseSami(
   let to = syncClose.exec(smi);
 
   const langs = getClassNameByLang(css);
-  const klass = langs[lang];
+  const klass = langs[lang || ""];
 
   assert(klass, `sami: could not find lang ${lang} in CSS`);
 
@@ -167,7 +167,7 @@ function parseSami(
       } else {
         subs.push({
           text: decodeEntities(txt),
-          start: start + timeOffset,
+          start: start + (timeOffset || 0),
         });
       }
     }

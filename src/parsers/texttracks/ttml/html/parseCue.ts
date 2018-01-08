@@ -40,12 +40,12 @@ export interface ITTMLHTMLCue {
  */
 export default function parseCue(
   paragraph : Element,
-  offset : number,
   styles : IStyleObject[],
   regions : IStyleObject[],
   body : Element|null,
   styleBase : IStyleList,
-  ttParams : ITTParameters
+  ttParams : ITTParameters,
+  offset? : number
 ) : ITTMLHTMLCue|null {
   // Disregard empty elements:
   // TTML allows for empty elements like <div></div>.
@@ -67,8 +67,8 @@ export default function parseCue(
     ttParams.spaceStyle === "default"
   );
   return {
-    start: start + offset,
-    end: end + offset,
+    start: start + (offset || 0),
+    end: end + (offset || 0),
     element,
   };
 }

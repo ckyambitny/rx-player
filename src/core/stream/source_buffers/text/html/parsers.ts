@@ -23,7 +23,7 @@ export interface IHTMLCue {
 }
 
 type htmlParserFn =
-  (texttrack : string, timeOffset : number, language? : string) => IHTMLCue[];
+  (texttrack : string, timeOffset? : number, language? : string) => IHTMLCue[];
 const htmlParsers : { [format : string] : htmlParserFn } = {};
 
 /* tslint:disable no-var-requires */
@@ -59,7 +59,7 @@ if (__FEATURES__.HTML_VTT) {
 export default function parseTextTrackToElements(
   type : string,
   data : string,
-  timeOffset : number,
+  timeOffset? : number,
   language? : string
 ) : IHTMLCue[] {
   log.debug("finding parser for html text tracks:", type);

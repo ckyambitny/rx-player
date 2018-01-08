@@ -31,7 +31,7 @@ import { makeCue } from "../../../compat/index";
  */
 export default function parseVTTStringToVTTCues(
   vttStr : string,
-  timeOffset : number
+  timeOffset? : number
 ) : Array<TextTrackCue|VTTCue> {
   // WEBVTT authorize CRLF, LF or CR as line terminators
   const lines = vttStr.split(/\r\n|\n|\r/);
@@ -99,7 +99,7 @@ function isStartOfCueBlock(line : string) : boolean {
  * @param {Number} timeOffset
  * @returns {TextTrackCue|VTTCue}
  */
-function parseCue(cueLines : string[], timeOffset : number) : TextTrackCue|VTTCue|null {
+function parseCue(cueLines : string[], timeOffset? : number) : TextTrackCue|VTTCue|null {
   const timingRegexp = /-->/;
   let timeString;
   let payloadLines;
@@ -123,7 +123,7 @@ function parseCue(cueLines : string[], timeOffset : number) : TextTrackCue|VTTCu
 
   const { start, end, settings } = timeAndSettings;
   const payload = payloadLines.join("\n");
-  const cue = makeCue(start + timeOffset, end + timeOffset, payload);
+  const cue = makeCue(start + (timeOffset || 0), end + (timeOffset || 0), payload);
   if (cue && cue instanceof VTTCue) {
     setSettingsOnCue(settings, cue);
   }

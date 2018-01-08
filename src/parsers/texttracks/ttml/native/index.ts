@@ -73,7 +73,7 @@ const TEXT_ALIGN_TO_POSITION_ALIGN : IDictionary<string> = {
  */
 function parseTTMLStringToVTT(
   str : string,
-  timeOffset : number
+  timeOffset? : number
 ) : Array<VTTCue|TextTrackCue> {
   const ret : Array<VTTCue|TextTrackCue> = [];
   const xml = new DOMParser().parseFromString(str, "text/xml");
@@ -149,11 +149,11 @@ function parseTTMLStringToVTT(
 
         const cue = parseCue(
           paragraph,
-          timeOffset,
           styles,
           regions,
           paragraphStyle,
-          params
+          params,
+          timeOffset
         );
         if (cue) {
           ret.push(cue);
@@ -178,11 +178,11 @@ function parseTTMLStringToVTT(
  */
 function parseCue(
   paragraph : Element,
-  offset : number,
   _styles : IStyleObject[],
   _regions : IStyleObject[],
   paragraphStyle : IStyleList,
-  params : ITTParameters
+  params : ITTParameters,
+  offset? : number
 ) : VTTCue|TextTrackCue|null {
   // Disregard empty elements:
   // TTML allows for empty elements like <div></div>.
@@ -196,7 +196,7 @@ function parseCue(
 
   const { start, end } = getTimeDelimiters(paragraph, params);
   const text = generateTextContent(paragraph, params.spaceStyle === "default");
-  const cue = makeCue(start + offset, end + offset, text);
+  const cue = makeCue(start + (offset || 0), end + (offset || 0), text);
   if (!cue) {
     return null;
   }

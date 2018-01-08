@@ -29,7 +29,7 @@ import parseTimestamp from "./parseTimestamp";
  */
 export default function parseSRTStringToVTTCues(
   srtStr : string,
-  timeOffset : number
+  timeOffset? : number
 ) : Array<VTTCue|TextTrackCue> {
   // Even if srt only authorize CRLF, we will also take LF or CR as line
   // terminators for resilience
@@ -67,7 +67,7 @@ export default function parseSRTStringToVTTCues(
  */
 function parseCue(
   cueLines : string[],
-  timeOffset : number
+  timeOffset? : number
 ) : VTTCue|TextTrackCue|null {
   const [startString, endString] = cueLines[1].split(" --> ");
   const payloadLines = cueLines.slice(2, cueLines.length);
@@ -81,5 +81,5 @@ function parseCue(
     return null;
   }
   const payload = payloadLines.join("\n");
-  return makeCue(start + timeOffset, end + timeOffset, payload);
+  return makeCue(start + (timeOffset || 0), end + (timeOffset || 0), payload);
 }

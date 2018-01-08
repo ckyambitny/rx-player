@@ -28,7 +28,7 @@ export interface INativeTextTrackData {
   language : string;
   timescale : number;
   start: number;
-  timeOffset: number;
+  timeOffset?: number;
   end? : number;
   type : string;
 }

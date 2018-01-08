@@ -16,7 +16,7 @@
 
 import log from "../../../../../utils/log";
 
-type nativeParserFn = (texttrack : string, timeOffset : number, language? : string) =>
+type nativeParserFn = (texttrack : string, timeOffset? : number, language? : string) =>
     VTTCue[]|TextTrackCue[];
 const nativeParsers : { [format : string] : nativeParserFn } = {};
 
@@ -53,8 +53,8 @@ if (__FEATURES__.NATIVE_SRT) {
 export default function parseTextTrackToCues(
   type : string,
   data : string,
-  timeOffset : number,
-  language : string
+  timeOffset? : number,
+  language? : string
 ) : VTTCue[]|TextTrackCue[] {
   log.debug("finding parser for native text tracks:", type);
   const parser = nativeParsers[type];

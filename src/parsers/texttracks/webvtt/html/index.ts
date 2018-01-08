@@ -48,7 +48,7 @@ export interface IVTTHTMLCue {
  */
 export default function parseWebVTT(
   text : string,
-  timeOffset : number
+  timeOffset? : number
 ) : IVTTHTMLCue[] {
   const newLineChar = /\r\n|\n|\r/g;
   const linified = text.split(newLineChar);
@@ -90,7 +90,7 @@ export default function parseWebVTT(
           i++;
         }
         const cueBlock = linified.slice(startOfCueBlock, i);
-        const cue = parseCue(cueBlock, timeOffset, styleElements);
+        const cue = parseCue(cueBlock,  styleElements, timeOffset);
         if (cue) {
           cuesArray.push(cue);
         }
@@ -118,8 +118,8 @@ export default function parseWebVTT(
  */
 function parseCue(
   cueBlock : string[],
-  timeOffset : number,
-  styleElements : IStyleElement[]
+  styleElements : IStyleElement[],
+  timeOffset? : number
 ) : IVTTHTMLCue|undefined {
   const region = document.createElement("div");
   const regionAttr = document.createAttribute("style");
@@ -192,8 +192,8 @@ function parseCue(
   pElement.appendChild(spanElement);
 
   return {
-    start: range.start + timeOffset,
-    end: range.end + timeOffset,
+    start: range.start + (timeOffset || 0),
+    end: range.end + (timeOffset || 0),
     element: region,
   };
 }

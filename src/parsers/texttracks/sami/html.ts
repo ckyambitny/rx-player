@@ -102,7 +102,11 @@ function decodeEntities(text : string) : string {
  * @param {Number} timeOffset
  * @param {string} lang
  */
-function parseSami(smi : string, timeOffset : number, lang : string) : ISAMIHTMLCue[] {
+function parseSami(
+  smi : string,
+  timeOffset? : number,
+  lang? : string
+) : ISAMIHTMLCue[] {
   const syncOpen = /<sync[ >]/ig;
   const syncClose = /<sync[ >]|<\/body>/ig;
 
@@ -115,7 +119,7 @@ function parseSami(smi : string, timeOffset : number, lang : string) : ISAMIHTML
 
   const langs = getClassNameByLang(css);
   const pCSS = getPCSSRules(css);
-  const klass = langs[lang];
+  const klass = langs[lang || ""];
 
   assert(klass, `sami: could not find lang ${lang} in CSS`);
 
@@ -198,7 +202,7 @@ function parseSami(smi : string, timeOffset : number, lang : string) : ISAMIHTML
 
         subs.push({
           element: wrapperEl,
-          start: start + timeOffset,
+          start: start + (timeOffset || 0),
           end: -1, // Will be updated on a following iteration
         });
       }
